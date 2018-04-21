@@ -9,7 +9,7 @@ function orders(
     state = {
         isFetching: false,
         didInvalidate: false,
-        items: []
+        orders: {}
     },
     action
 ) {
@@ -23,7 +23,7 @@ function orders(
             return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate: false,
-                items: action.orders,
+                orders: action.orders,
                 lastUpdated: action.receivedAt
             });
         default:
@@ -36,7 +36,7 @@ export const ordersByFilter = (state = {}, action) => {
         case RECEIVE_ORDERS:
         case REQUEST_ORDERS:
             return Object.assign({}, state, {
-                [action.filter]: orders(state[action.filter], action)
+                orders: orders(state[action.filter], action)
             });
         default:
             return state

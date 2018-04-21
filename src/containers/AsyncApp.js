@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import {
     //selectSubreddit,
     fetchOrdersIfNeeded,
@@ -12,19 +12,19 @@ import ResultsTable from '../components/resultsTable';
 class AsyncApp extends Component {
     constructor(props) {
         super(props);
-       // this.handleChange = this.handleChange.bind(this)
+        // this.handleChange = this.handleChange.bind(this)
         this.handleRefreshClick = this.handleRefreshClick.bind(this);
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(fetchOrdersIfNeeded());
     }
 
     componentDidUpdate(prevProps) {
         // if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
-            const { dispatch } = this.props;
-            dispatch(fetchOrdersIfNeeded());
+        // const {dispatch} = this.props;
+        // dispatch(fetchOrdersIfNeeded());
         // }
     }
 
@@ -36,13 +36,22 @@ class AsyncApp extends Component {
     handleRefreshClick(e) {
         e.preventDefault();
 
-        const { dispatch, selectedSubreddit } = this.props;
+        const {dispatch, selectedSubreddit} = this.props;
         // dispatch(invalidateSubreddit(selectedSubreddit))
         dispatch(fetchOrdersIfNeeded(selectedSubreddit));
     }
 
     render() {
-        const { posts, isFetching, lastUpdated } = this.props;
+        const {orders, isFetching, lastUpdated} = this.props;
+        let orderList;
+        if (orders.orders && orders.orders.OutgoingOrders && orders.orders.OutgoingOrders.Order.length > 0) {
+            orderList = orders.orders.OutgoingOrders.Order.map(order =>{
+                return (
+                    <li>{order.ESPOrderNo}</li>
+                )
+            })
+        }
+
         return (
             <div>
                 <p>
@@ -56,11 +65,13 @@ class AsyncApp extends Component {
                         Refresh
                     </button>}
                 </p>
-                {isFetching && posts.length === 0 && <h2>Loading...</h2>}
-                {!isFetching && (posts === undefined || posts.length === 0) && <h2>Empty.</h2>}
-                {posts && posts.length > 0 &&
-                <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                    <ResultsTable />
+                {isFetching && !orderList && <h2>Loading...</h2>}
+                {!isFetching &&orderList && orderList.length === 0 && <h2>Empty.</h2>}
+                {orderList && orderList.length > 0 &&
+                <div style={{opacity: isFetching ? 0.5 : 1}}>
+                    <ul>
+                        {orderList}
+                    </ul>
                 </div>}
             </div>
         );
@@ -69,22 +80,26 @@ class AsyncApp extends Component {
 
 AsyncApp.propTypes = {
     // selectedSubreddit: PropTypes.string.isRequired,
-    posts: PropTypes.any,
+    orders: PropTypes.any,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.any,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    const { ordersByFilter } = state;
-    const {
-        isFetching,
+    const {ordersByFilter} = state;
+    let isFetching,
         lastUpdated,
-        items: orders
-    } = ordersByFilter || {
-        isFetching: true,
-        items: []
-    };
+        orders;
+
+    if (Object.keys(ordersByFilter).length !== 0) {
+        isFetching = ordersByFilter.isFetching;
+        lastUpdated = ordersByFilter.lastUpdated;
+        orders = ordersByFilter.orders;
+    } else {
+        isFetching = true;
+        orders = {};
+    }
 
     return {
         //selectedSubreddit,
