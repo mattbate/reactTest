@@ -1,6 +1,7 @@
 import React from 'react';
 import {changeFilter} from '../redux/OrdersFilter/ordersFilterActions';
 import {connect} from "react-redux";
+import {Button} from "reactstrap";
 
 class Pager extends React.Component {
     constructor(props) {
@@ -21,12 +22,13 @@ class Pager extends React.Component {
         return (
 
             <div className="row">
+
+                <div className="col-sm-4">
+                    {this.props.pageNumber >1 && <Button onClick={this.handlePrevClick}>&lt; Previous page</Button>}
+                </div>
                 <div className="col-sm-4"> Current page: {this.props.pageNumber}</div>
                 <div className="col-sm-4">
-                    {this.props.pageNumber >1 && <a href="#" onClick={this.handlePrevClick}>&lt; Previous page</a>}
-                </div>
-                <div className="col-sm-4">
-                    <a href="#" onClick={this.handleNextClick}>next page &gt;</a>
+                    <Button onClick={this.handleNextClick}>next page &gt;</Button>
                 </div>
             </div>
         );

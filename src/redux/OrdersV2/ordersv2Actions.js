@@ -21,13 +21,20 @@ function receiveOrders(filter, json) {
 }
 
 function fetchOrders(filter) {
-
-    let queryParams = {
-        EntriesPerPage:10,
-        PaidOnly: filter.paidFor,
-        PageNumber:filter.pageNumber
+    let queryParams = {};
+    if (filter.id) {
+        queryParams = {
+            ESPOrderNo: filter.id
+        };
+    } else {
+        queryParams = {
+            EntriesPerPage: 10,
+            PaidOnly: filter.paidFor,
+            PageNumber: filter.pageNumber
+        };
     }
-// iterate through key-value gracefully
+
+    // iterate through key-value gracefully
     let queryString = '';
     for (const [key, value] of Object.entries(queryParams)) {
         queryString += `${key}=${value}&`
@@ -38,7 +45,7 @@ function fetchOrders(filter) {
         let url = 'http://user-experience1.esellerpro.com/eSellerProAPI/services/api/rs/v2/orders?' + queryString;
         return fetch(url, {
             method: 'GET',
-            headers:{
+            headers: {
                 Authorization: 'Basic aW50ZXJ2aWV3Lk1hdHRoZXdCOmludGVydmlldw==',
                 Accept: 'application/json'
             }
@@ -63,6 +70,14 @@ export function fetchOrdersIfNeeded(filter) {
     return (dispatch, getState) => {
         if (shouldFetchOrders(getState(), filter)) {
             return dispatch(fetchOrders(filter))
+        }
+    };
+}
+
+export function fetchOrderDetails(id) {
+    return (dispatch, getState) => {
+        if (shouldFetchOrders(getState(), {id:id})) {
+            return dispatch(fetchOrders({id:id}))
         }
     };
 }

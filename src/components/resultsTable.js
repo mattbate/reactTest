@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table} from "reactstrap";
+import {Link} from "react-router-dom";
 
 
 const ResultsTable = (props) => {
@@ -21,6 +22,7 @@ const ResultsTable = (props) => {
             return (
                 <tr key={outerIndex+'a'}>
                     {orderCells}
+                    <td><Link to={'/order/' + order.ESPOrderNo}>view details</Link></td>
                 </tr>
             )
         });

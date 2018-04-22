@@ -12,7 +12,7 @@ import FilterWrapper from '../components/orderFilter';
 import Pager from '../components/pager';
 
 
-class AsyncApp extends Component {
+class OrderList extends Component {
     constructor(props) {
         super(props);
         // this.handleChange = this.handleChange.bind(this)
@@ -54,8 +54,8 @@ class AsyncApp extends Component {
             text: "Date",
             key: 'Date'
         },{
-            text: "Invoice number",
-            key: 'InvoiceNumber'
+            text: "ESP Order No",
+            key: 'ESPOrderNo'
         },{
             text: "Amount",
             key: 'OrderTotal'
@@ -80,7 +80,7 @@ class AsyncApp extends Component {
     };
 }
 
-AsyncApp.propTypes = {
+OrderList.propTypes = {
     // selectedSubreddit: PropTypes.string.isRequired,
     orders: PropTypes.any,
     isFetching: PropTypes.bool.isRequired,
@@ -116,4 +116,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(AsyncApp)
+export default connect(mapStateToProps)(OrderList)
