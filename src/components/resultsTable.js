@@ -12,6 +12,7 @@ const ResultsTable = (props) => {
                 <th key={index +'b'}>{column.text}</th>
             )
         })
+        thCells.push((<th />));
     }
 
     if (props.orders && props.orders.length > 0){

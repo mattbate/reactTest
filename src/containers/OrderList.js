@@ -65,8 +65,12 @@ class OrderList extends Component {
         }];
         return (
             <div>
-                <div>
-                    <FilterWrapper />
+                <h1>Order list</h1>
+                <div className="card">
+                    <div className="card-body">
+                        <h2 className="card-title">Filter orders</h2>
+                        <FilterWrapper />
+                    </div>
                 </div>
                 {isFetching && !orderList && <p>Loading...</p>}
                 {!isFetching && orderList && orderList.length === 0 && <p>Empty.</p>}

@@ -26,9 +26,14 @@ class OrderDetail extends Component {
 
     render() {
         const {orders, isFetching, lastUpdated} = this.props;
-        let orderDetail;
+        let orderDetail, itemList;
         if (orders && orders.OutgoingOrders && orders.OutgoingOrders.Order.length > 0) {
             orderDetail = orders.OutgoingOrders.Order[0];
+            itemList = orderDetail.OrderItems.Item.map(item=>{
+                return (
+                    <li className="list-group-item"><strong>{item.ProductTitle}</strong> {item.Quantity} @ {item.UnitCost}</li>
+                )
+            })
         }
 
         return (
@@ -37,9 +42,21 @@ class OrderDetail extends Component {
                 {/*{!isFetching && orderDetail && orderList.length === 0 && <p>Empty.</p>}*/}
                 {orderDetail &&
                 <div style={{opacity: isFetching ? 0.5 : 1}}>
-                    <ul>
-                        <li>{orderDetail.Date}</li>
-                    </ul>
+                    <h1>Order details</h1>
+                    <div className="row">
+                        <div className="col">
+                            <ul className="list-group">
+                                <li className="list-group-item">Order date: {new Date(orderDetail.Date).toLocaleDateString('en-GB',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</li>
+                                <li className="list-group-item">Status: {orderDetail.OrderStatus}</li>
+                                <li className="list-group-item">Value: {orderDetail.CurrencyCode + orderDetail.OrderTotal}</li>
+                            </ul>
+                        </div>
+                        <div className="col">
+                            <ul className="list-group list-group-flush">
+                                {itemList}
+                            </ul>
+                        </div>
+                    </div>
                 </div>}
             </div>
         );
