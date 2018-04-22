@@ -5,9 +5,10 @@ import {
     //selectSubreddit,
     fetchOrdersIfNeeded,
     //invalidateSubreddit
-} from '../redux/ordersv2Actions'
+} from '../redux/OrdersV2/ordersv2Actions'
 
 import ResultsTable from '../components/resultsTable';
+import FilterWrapper from '../components/orderFilter'
 
 class AsyncApp extends Component {
     constructor(props) {
@@ -62,17 +63,9 @@ class AsyncApp extends Component {
         }];
         return (
             <div>
-                <p>
-                    {lastUpdated &&
-                    <span>
-              {/*Last updated at {new Date(lastUpdated).toLocaleTimeString()}.*/}
-                        {' '}
-            </span>}
-                    {!isFetching &&
-                    <button onClick={this.handleRefreshClick}>
-                        Refresh
-                    </button>}
-                </p>
+                <div>
+                    <FilterWrapper />
+                </div>
                 {isFetching && !orderList && <h2>Loading...</h2>}
                 {!isFetching && orderList && orderList.length === 0 && <h2>Empty.</h2>}
                 {orderList && orderList.length > 0 &&
