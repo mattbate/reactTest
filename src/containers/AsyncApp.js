@@ -8,7 +8,9 @@ import {
 } from '../redux/OrdersV2/ordersv2Actions'
 
 import ResultsTable from '../components/resultsTable';
-import FilterWrapper from '../components/orderFilter'
+import FilterWrapper from '../components/orderFilter';
+import Pager from '../components/pager';
+
 
 class AsyncApp extends Component {
     constructor(props) {
@@ -66,11 +68,12 @@ class AsyncApp extends Component {
                 <div>
                     <FilterWrapper />
                 </div>
-                {isFetching && !orderList && <h2>Loading...</h2>}
-                {!isFetching && orderList && orderList.length === 0 && <h2>Empty.</h2>}
+                {isFetching && !orderList && <p>Loading...</p>}
+                {!isFetching && orderList && orderList.length === 0 && <p>Empty.</p>}
                 {orderList && orderList.length > 0 &&
                 <div style={{opacity: isFetching ? 0.5 : 1}}>
                     <ResultsTable orders={orderList} columns={columns}/>
+                    <Pager />
                 </div>}
             </div>
         );

@@ -10,7 +10,7 @@ class FilterWrapper extends React.Component {
     }
 
     handleCheckBox = (event) => {
-        this.props.changeFilter({paidFor: !this.props.paidFor});
+        this.props.changeFilter({paidFor: !this.props.paidFor, pageNumber:1});
     };
 
     render(){

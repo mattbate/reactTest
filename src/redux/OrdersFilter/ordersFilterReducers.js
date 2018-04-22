@@ -2,7 +2,7 @@ import {CHANGE_FILTERS} from "./ordersFilterActions";
 
 const initialState = {
     paidFor: false,
-    pageNumber: 3 
+    pageNumber: 1
 };
 
 const ordersFilterReducer = (state = initialState, action) => {
