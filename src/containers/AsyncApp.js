@@ -44,14 +44,22 @@ class AsyncApp extends Component {
     render() {
         const {orders, isFetching, lastUpdated} = this.props;
         let orderList;
-        if (orders.orders && orders.orders.OutgoingOrders && orders.orders.OutgoingOrders.Order.length > 0) {
-            orderList = orders.orders.OutgoingOrders.Order.map(order =>{
-                return (
-                    <li>{order.ESPOrderNo}</li>
-                )
-            })
+        if (orders && orders.OutgoingOrders && orders.OutgoingOrders.Order.length > 0) {
+            orderList = orders.OutgoingOrders.Order;
         }
-
+        let columns = [{
+            text: "Date",
+            key: 'Date'
+        },{
+            text: "Invoice number",
+            key: 'InvoiceNumber'
+        },{
+            text: "Amount",
+            key: 'OrderTotal'
+        },{
+            text: "Status",
+            key: 'OrderStatus'
+        }];
         return (
             <div>
                 <p>
@@ -66,12 +74,10 @@ class AsyncApp extends Component {
                     </button>}
                 </p>
                 {isFetching && !orderList && <h2>Loading...</h2>}
-                {!isFetching &&orderList && orderList.length === 0 && <h2>Empty.</h2>}
+                {!isFetching && orderList && orderList.length === 0 && <h2>Empty.</h2>}
                 {orderList && orderList.length > 0 &&
                 <div style={{opacity: isFetching ? 0.5 : 1}}>
-                    <ul>
-                        {orderList}
-                    </ul>
+                    <ResultsTable orders={orderList} columns={columns}/>
                 </div>}
             </div>
         );

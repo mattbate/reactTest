@@ -15,7 +15,7 @@ function receiveOrders(filter, json) {
     return {
         type: RECEIVE_ORDERS,
         filter,
-        orders: json,//.data.children.map(child => child.data),
+        json,//.data.children.map(child => child.data),
         receivedAt: Date.now()
     }
 }
