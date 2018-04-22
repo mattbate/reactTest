@@ -6,20 +6,20 @@ const ResultsTable = (props) => {
     let orderRows;
     let thCells;
     if (props.columns){
-        thCells = props.columns.map(column => {
+        thCells = props.columns.map((column, index) => {
             return (
-                <th>{column.text}</th>
+                <th key={index +'b'}>{column.text}</th>
             )
         })
     }
 
     if (props.orders && props.orders.length > 0){
-        orderRows = props.orders.map(order =>{
-            let orderCells = props.columns.map(column =>{
-                return (<td>{order[column.key]}</td>);
+        orderRows = props.orders.map((order, outerIndex) =>{
+            let orderCells = props.columns.map((column, index) =>{
+                return (<td key={index+'c'}>{order[column.key]}</td>);
             });
             return (
-                <tr>
+                <tr key={outerIndex+'a'}>
                     {orderCells}
                 </tr>
             )

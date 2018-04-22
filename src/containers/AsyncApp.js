@@ -19,14 +19,14 @@ class AsyncApp extends Component {
 
     componentDidMount() {
         const {dispatch} = this.props;
-        dispatch(fetchOrdersIfNeeded());
+        dispatch(fetchOrdersIfNeeded(this.props.ordersFilter));
     }
 
     componentDidUpdate(prevProps) {
-        // if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
-        // const {dispatch} = this.props;
-        // dispatch(fetchOrdersIfNeeded());
-        // }
+        if (this.props.ordersFilter !== prevProps.ordersFilter) {
+            const {dispatch} = this.props;
+            dispatch(fetchOrdersIfNeeded(this.props.ordersFilter));
+        }
     }
 
     // handleChange(nextSubreddit) {
@@ -82,15 +82,19 @@ AsyncApp.propTypes = {
     orders: PropTypes.any,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.any,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+
+    ordersFilter: PropTypes.object
 };
 
 function mapStateToProps(state) {
-    const {ordersByFilter} = state;
+    const {ordersByFilter, ordersFilterReducer} = state;
     let isFetching,
         lastUpdated,
-        orders;
+        orders,
+        ordersFilter;
 
+    ordersFilter = ordersFilterReducer;
     if (Object.keys(ordersByFilter).length !== 0) {
         isFetching = ordersByFilter.isFetching;
         lastUpdated = ordersByFilter.lastUpdated;
@@ -98,13 +102,14 @@ function mapStateToProps(state) {
     } else {
         isFetching = true;
         orders = {};
+
     }
 
     return {
-        //selectedSubreddit,
         orders,
         isFetching,
-        lastUpdated
+        lastUpdated,
+        ordersFilter
     }
 }
 

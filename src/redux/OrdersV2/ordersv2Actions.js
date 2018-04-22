@@ -21,9 +21,21 @@ function receiveOrders(filter, json) {
 }
 
 function fetchOrders(filter) {
+
+    let queryParams = {
+        EntriesPerPage:10,
+        PaidOnly: filter.paidFor,
+        PageNumber:filter.pageNumber
+    }
+// iterate through key-value gracefully
+    let queryString = '';
+    for (const [key, value] of Object.entries(queryParams)) {
+        queryString += `${key}=${value}&`
+    }
+
     return dispatch => {
         dispatch(requestOrders(filter));
-        let url = 'http://user-experience1.esellerpro.com/eSellerProAPI/services/api/rs/v2/orders?EntriesPerPage=10&PageNumber=2';
+        let url = 'http://user-experience1.esellerpro.com/eSellerProAPI/services/api/rs/v2/orders?' + queryString;
         return fetch(url, {
             method: 'GET',
             headers:{

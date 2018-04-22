@@ -1,6 +1,9 @@
 import {CHANGE_FILTERS} from "./ordersFilterActions";
 
-const initialState = {};
+const initialState = {
+    paidFor: false,
+    pageNumber: 3 
+};
 
 const ordersFilterReducer = (state = initialState, action) => {
   switch (action.type){
