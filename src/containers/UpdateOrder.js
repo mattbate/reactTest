@@ -72,7 +72,7 @@ class UpdateOrder extends Component {
                 <h2>Add note</h2>
                 {this.props.updateOrder &&
                     this.props.updateOrder.type === "FAILED_UPDATE_ORDER" &&
-                 <Alert color="danger">Unfortunatly there was an error</Alert>}
+                 <Alert color="danger">Unfortunatly there was an error, please call support.</Alert>}
 
                 {this.props.updateOrder &&
                 this.props.updateOrder.type === "RECEIVE_UPDATE_ORDER" &&
