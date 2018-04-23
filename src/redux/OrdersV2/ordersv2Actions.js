@@ -3,6 +3,10 @@ import fetch from 'cross-fetch';
 export const REQUEST_ORDERS = 'REQUEST_ORDERS';
 export const RECEIVE_ORDERS = 'RECEIVE_ORDERS';
 
+export const REQUEST_UPDATE_ORDER = 'REQUEST_UPDATE_ORDER';
+export const RECEIVE_UPDATE_ORDER = 'RECEIVE_UPDATE_ORDER';
+export const FAILED_UPDATE_ORDER = 'FAILED_UPDATE_ORDER';
+export const CLEAR_UPDATE_ORDER = 'CLEAR_UPDATE_ORDER';
 
 function requestOrders(filter) {
     return {
@@ -80,4 +84,66 @@ export function fetchOrderDetails(id) {
             return dispatch(fetchOrders({id:id}))
         }
     };
+}
+
+function requestUpdateOrder(orderUpdate) {
+    return {
+        type: REQUEST_UPDATE_ORDER,
+        orderUpdate
+    }
+}
+
+function receiveUpdateOrder(orderUpdate, response) {
+    return {
+        type: RECEIVE_UPDATE_ORDER,
+        orderUpdate,
+        response,
+        receivedAt: Date.now()
+    }
+}
+
+function failedUpdateOrder(orderUpdate, response) {
+    return{
+        type: FAILED_UPDATE_ORDER,
+        orderUpdate,
+        response,
+        receivedAt: Date.now()
+    }
+}
+
+export function clearUpdateOrder (){
+    return {type: CLEAR_UPDATE_ORDER,
+        orderUpdate:{},
+        response:{},
+        receivedAt: Date.now()
+    }
+}
+function doUpdateOrder(orderUpdate) {
+
+
+
+    return dispatch => {
+        dispatch(requestUpdateOrder(orderUpdate));
+        let url = 'http://user-experience1.esellerpro.com/eSellerProAPI/services/api/rs/orders';
+        return fetch(url, {
+            method: 'PUT',
+            body: JSON.stringify(orderUpdate),
+            headers: {
+                Authorization: 'Basic aW50ZXJ2aWV3Lk1hdHRoZXdCOmludGVydmlldw==',
+                Accept: 'application/json',
+
+
+                "Content-Type": "application/json"
+
+            }
+        }).then(response => response.json())
+            .then(json => dispatch(receiveUpdateOrder(orderUpdate, json)))
+            .catch(reason => dispatch(failedUpdateOrder(orderUpdate, reason)));
+    }
+}
+
+export function updateOrder(orderUpdate) {
+    return (dispatch, getState) => {
+        return dispatch(doUpdateOrder(orderUpdate))
+    }
 }

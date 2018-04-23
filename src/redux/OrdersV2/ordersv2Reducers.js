@@ -1,6 +1,9 @@
 import {
     REQUEST_ORDERS,
-    RECEIVE_ORDERS
+    RECEIVE_ORDERS,
+    RECEIVE_UPDATE_ORDER,
+    REQUEST_UPDATE_ORDER,
+    FAILED_UPDATE_ORDER, CLEAR_UPDATE_ORDER
 } from './ordersv2Actions'
 
 
@@ -39,7 +42,20 @@ export const ordersByFilter = (state = {}, action) => {
                 orders(state[action.filter], action)
             );
         default:
-            return state
+            return state;
     }
 };
 
+export const updateOrder = (state = {}, action) => {
+    switch (action.type){
+        case REQUEST_UPDATE_ORDER:
+        case RECEIVE_UPDATE_ORDER:
+            return {...state, ...action.orderUpdate, ...action};
+        case FAILED_UPDATE_ORDER:
+            return {...state, ...action.orderUpdate, ...action};
+        case CLEAR_UPDATE_ORDER:
+            return {...state, ...action.orderUpdate, ...action}
+        default:
+            return state;
+    }
+};

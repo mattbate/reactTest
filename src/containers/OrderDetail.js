@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {
     fetchOrderDetails, fetchOrdersIfNeeded
 } from '../redux/OrdersV2/ordersv2Actions'
+import UpdateOrder from "./UpdateOrder";
 
 
 class OrderDetail extends Component {
@@ -18,10 +19,12 @@ class OrderDetail extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.ordersFilter !== prevProps.ordersFilter) {
+
+        if (this.props.orderId !== prevProps.orderId) {
             const {dispatch} = this.props;
             dispatch(fetchOrdersIfNeeded(this.props.ordersFilter));
         }
+
     }
 
     render() {
@@ -29,9 +32,9 @@ class OrderDetail extends Component {
         let orderDetail, itemList;
         if (orders && orders.OutgoingOrders && orders.OutgoingOrders.Order.length > 0) {
             orderDetail = orders.OutgoingOrders.Order[0];
-            itemList = orderDetail.OrderItems.Item.map(item=>{
+            itemList = orderDetail.OrderItems.Item.map((item, idx)=>{
                 return (
-                    <li className="list-group-item"><strong>{item.ProductTitle}</strong> {item.Quantity} @ {item.UnitCost}</li>
+                    <li className="list-group-item" key={idx}><strong>{item.ProductTitle}</strong> {item.Quantity} @ {orderDetail.CurrencyCode+item.UnitCost}</li>
                 )
             })
         }
@@ -55,6 +58,7 @@ class OrderDetail extends Component {
                             <ul className="list-group list-group-flush">
                                 {itemList}
                             </ul>
+                            <UpdateOrder orderId={this.props.orderId} />
                         </div>
                     </div>
                 </div>}

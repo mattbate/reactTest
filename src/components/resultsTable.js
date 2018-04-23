@@ -18,7 +18,11 @@ const ResultsTable = (props) => {
     if (props.orders && props.orders.length > 0){
         orderRows = props.orders.map((order, outerIndex) =>{
             let orderCells = props.columns.map((column, index) =>{
-                return (<td key={index+'c'}>{order[column.key]}</td>);
+                let cellText = order[column.key];
+                if (column.key ==="Date"){
+                    cellText = new Date(cellText).toLocaleDateString('en-GB',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })
+                }
+                return (<td key={index+'c'}>{cellText}</td>);
             });
             return (
                 <tr key={outerIndex+'a'}>
