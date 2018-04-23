@@ -36,7 +36,14 @@ function fetchOrders(filter) {
             PaidOnly: filter.paidFor,
             PageNumber: filter.pageNumber
         };
+        if (filter.startDate){
+            queryParams.StartDate = new Date(filter.startDate).toISOString();
+        }
+        if (filter.endDate){
+            queryParams.EndDate = new Date(filter.endDate).toISOString();
+        }
     }
+
 
     // iterate through key-value gracefully
     let queryString = '';

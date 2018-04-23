@@ -47,7 +47,7 @@ class OrderList extends Component {
     render() {
         const {orders, isFetching, lastUpdated} = this.props;
         let orderList;
-        if (orders && orders.OutgoingOrders && orders.OutgoingOrders.Order.length > 0) {
+        if (orders && orders.OutgoingOrders && orders.OutgoingOrders.Order && orders.OutgoingOrders.Order.length > 0) {
             orderList = orders.OutgoingOrders.Order;
         }
         let columns = [{
@@ -73,7 +73,7 @@ class OrderList extends Component {
                     </div>
                 </div>
                 {isFetching && !orderList && <p>Loading...</p>}
-                {!isFetching && orderList && orderList.length === 0 && <p>Empty.</p>}
+                {!isFetching && !orderList && <p>Empty.</p>}
                 {orderList && orderList.length > 0 &&
                 <div style={{opacity: isFetching ? 0.5 : 1}}>
                     <ResultsTable orders={orderList} columns={columns}/>
