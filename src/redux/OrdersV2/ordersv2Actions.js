@@ -20,7 +20,7 @@ function receiveOrders(filter, json) {
         type: RECEIVE_ORDERS,
         filter,
         json,//.data.children.map(child => child.data),
-        receivedAt: Date.now()
+        //receivedAt: Date.now()
     }
 }
 
@@ -61,7 +61,9 @@ function fetchOrders(filter) {
                 Accept: 'application/json'
             }
         }).then(response => response.json())
-            .then(json => dispatch(receiveOrders(filter, json)))
+            .then(json => {
+                return dispatch(receiveOrders(filter, {OutgoingOrders:json.OutgoingOrders, PaginationResult: json.PaginationResult}))
+            })
             .catch(rejection => console.log(rejection));
     }
 }
@@ -105,7 +107,7 @@ function receiveUpdateOrder(orderUpdate, response) {
         type: RECEIVE_UPDATE_ORDER,
         orderUpdate,
         response,
-        receivedAt: Date.now()
+        //receivedAt: Date.now()
     }
 }
 
@@ -114,7 +116,7 @@ function failedUpdateOrder(orderUpdate, response) {
         type: FAILED_UPDATE_ORDER,
         orderUpdate,
         response,
-        receivedAt: Date.now()
+        //receivedAt: Date.now()
     }
 }
 
@@ -122,7 +124,7 @@ export function clearUpdateOrder (){
     return {type: CLEAR_UPDATE_ORDER,
         orderUpdate:{},
         response:{},
-        receivedAt: Date.now()
+        //receivedAt: Date.now()
     }
 }
 function doUpdateOrder(orderUpdate) {
@@ -151,6 +153,6 @@ function doUpdateOrder(orderUpdate) {
 
 export function updateOrder(orderUpdate) {
     return (dispatch, getState) => {
-        return dispatch(doUpdateOrder(orderUpdate))
-    }
+        return dispatch(doUpdateOrder(orderUpdate));
+    };
 }

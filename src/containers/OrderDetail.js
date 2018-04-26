@@ -52,6 +52,11 @@ class OrderDetail extends Component {
                                 <li className="list-group-item">Order date: {new Date(orderDetail.Date).toLocaleDateString('en-GB',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</li>
                                 <li className="list-group-item">Status: {orderDetail.OrderStatus}</li>
                                 <li className="list-group-item">Value: {orderDetail.CurrencyCode + orderDetail.OrderTotal}</li>
+                                <li className="list-group-item"><ul>
+                                    <li>{orderDetail.CustomerName}</li>
+                                    <li>{orderDetail.CustomerAddress1}</li>
+                                    <li>{orderDetail.CustomerCity}</li>
+                                </ul></li>
                             </ul>
                         </div>
                         <div className="col">
